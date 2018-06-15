@@ -30,11 +30,11 @@ Before installing, make sure you have [Katalon Recorder](https://www.katalon.com
 
 ## Update
 
-Just remove the extension then install it again, or...
+Just remove the extension and then install it again, or...
 
 In **Google Chrome** only:
 1. [Download](https://github.com/thiagodp/katalon-concordia/archive/master.zip) the zipped file
-2. Extract it to the same folder as before
+2. Extract it to the same folder as where it was installed
 3. Enter `chrome://extensions` in the URL bar
 4. Find the extension and click on the reload icon (⟳)
 
