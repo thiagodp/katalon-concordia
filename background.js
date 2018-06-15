@@ -123,6 +123,10 @@ chrome.runtime.onMessageExternal.addListener( function( message, sender, sendRes
             return prefix + 'fecho a janela ' + wrappedTarget;
         }
 
+        if ( 'doubleClick' === cmd ) {
+            return prefix + 'dou um duplo clique em ' + wrappedTarget;
+        }
+
         if ( 'selectWindow' === cmd ) {
             return prefix + 'abro a janela ' + wrappedTarget;
         }
@@ -141,6 +145,10 @@ chrome.runtime.onMessageExternal.addListener( function( message, sender, sendRes
                 intVal = intVal / 1000;
             }
             return prefix + 'aguardo ' + intVal + ( ( intVal > 1 ) ? ' segundos' : ' segundo' );
+        }
+
+        if ( 'sendKeys' === cmd ) {
+            return prefix + 'pressiono ' + convertAllKeys( command.value );
         }
 
         if ( 'type' === cmd ) {
@@ -227,3 +235,45 @@ chrome.runtime.onMessageExternal.addListener( function( message, sender, sendRes
         } );
     }
 } );
+
+
+function convertKey( key ) {
+    // Different cases
+    switch ( key ) {
+        case 'KEY_DELETE': return 'Del';
+        case 'KEY_BKSP': return 'Backspace';
+        case 'KEY_PGUP': return 'PageUp';
+        case 'KEY_PGDOWN': return 'PageDown';
+    }
+    // Normal cases
+    var k = key;
+    if ( k.indexOf( 'KEY_' ) >= 0 ) {
+        k = k.substr( 'KEY_'.length ); // e.g., KEY_PAGE_UP -> PAGE_UP
+        k = k.substr( 0, 1 ).toUpperCase() + k.substr( 1 ).toLowerCase(); // PAGE_UP -> Page_up
+        var underlineIndex = k.indexOf( '_' );
+        if ( underlineIndex > 0 ) {
+            // Page_up -> PageUp
+            k = k.substring( 0, underlineIndex - 1 ) +
+                k.substr( underlineIndex + 1, 1 ).toUpperCase() +
+                k.substr( underlineIndex + 2 ).toLowerCase();
+        }
+    }
+    return k;
+}
+
+function convertAllKeys( allKeysStr ) {
+    var len = allKeysStr.length;
+    if ( allKeysStr.charAt( len - 1 ) === '}' ) {
+        allKeysStr = allKeysStr.substr( 0, len - 1 );
+    }
+    var values = allKeysStr.split( /\}?\$\{/ );
+    len = values.length, val = '';
+    var keys = [];
+    for ( var i = 0; i < len; ++i ) {
+        val = convertKey( values[ i ] );
+        if ( val.trim().length > 0 ) {
+            keys.push( val );
+        }
+    }
+    return '"' + keys.join( '", "' ) + '"';
+}
