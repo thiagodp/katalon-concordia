@@ -4,6 +4,8 @@
 
 This extension converts test scripts recorded with [Katalon Recorder](https://www.katalon.com/resources-center/blog/katalon-automation-recorder/) into sentences in [Concordia Language](http://concordialang.org).
 
+![Using](media/using-pt.gif)
+
 👉 *Current version supports only Concordia Language in **Portuguese**. A version in English will be available soon.*
 
 ## Install
