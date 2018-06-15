@@ -28,6 +28,17 @@ Before installing, make sure you have [Katalon Recorder](https://www.katalon.com
 3. Select the folder where you had extracted the files
 
 
+## Update
+
+Just remove the extension then install it again, or...
+
+In **Google Chrome** only:
+1. [Download](https://github.com/thiagodp/katalon-concordia/archive/master.zip) the zipped file
+2. Extract it to the same folder as before
+3. Enter `chrome://extensions` in the URL bar
+4. Find the extension and click on the reload icon (⟳)
+
+
 ## How to Use
 
 1. Open the extension [Katalon Automation Recorder]((https://www.katalon.com/resources-center/blog/katalon-automation-recorder/))
@@ -35,6 +46,31 @@ Before installing, make sure you have [Katalon Recorder](https://www.katalon.com
 3. Click **Export**
 4. In **Format**, select **Concordia Language**
 5. Click **Copy to Clipboard** OR **Save as File...**
+
+
+## Currently supported commands
+
+- `assertTitle`
+- `click`
+- `close`
+- `doubleClick`
+- `open`
+- `pause`
+- `selectWindow`
+- `sendKeys`
+- `submit`
+- `type`
+- `verifyElementPresent`
+- `verifyText`
+- `verifyTextPresent`
+- `verifyTitle`
+- `waitForElementPresent`
+- `waitForPageToLoad`
+
+More commands will be supported soon. Click on [Watch](https://github.com/thiagodp/katalon-concordia/subscription) in the top right corner to know about any news.
+
+👉 [Open an Issue](https://github.com/thiagodp/katalon-concordia/issues/new) for a command you need frequently.
+
 
 ## License
 
