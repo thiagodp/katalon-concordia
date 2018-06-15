@@ -72,6 +72,11 @@ More commands will be supported soon. Click on [Watch](https://github.com/thiago
 👉 [Open an Issue](https://github.com/thiagodp/katalon-concordia/issues/new) for a command you need frequently.
 
 
+## See also
+
+- [Concordia actions in Portuguese](https://github.com/thiagodp/concordialang/blob/master/docs/actions-pt.md)
+
+
 ## License
 
 ![AGPL](http://www.gnu.org/graphics/agplv3-88x31.png) © [Thiago Delgado Pinto](https://github.com/thiagodp)
