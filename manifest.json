@@ -1,0 +1,14 @@
+{
+    "manifest_version": 2,
+    "name": "Katalon to Concordia",
+    "version": "1.0.0",
+    "background": {
+        "scripts": [
+            "bowser.js",
+            "background.js"
+        ]
+    },
+    "permissions": [
+        "alarms"
+    ]
+}
