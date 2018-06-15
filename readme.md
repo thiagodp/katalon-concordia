@@ -11,16 +11,21 @@ This extension converts test scripts recorded with [Katalon Recorder](https://ww
 Before installing, make sure you have [Katalon Recorder](https://www.katalon.com/resources-center/blog/katalon-automation-recorder/) installed.
 
 1. [Download](https://github.com/thiagodp/katalon-concordia/archive/master.zip) the zip file
-2. Extract the file to a folder (*only needed for installing in Google Chrome*)
+2. Extract the file to a folder
 3. In **Google Chrome** only:
-    1. Open the url `chrome://extensions`
+    1. Enter `chrome://extensions` in the URL bar
     2. Enable **Developer Mode** in the top right corner
     3. Click **Load unpacked extension...**
-    4. Choose the folder where you had extracted the files
+    4. Select the folder where you had extracted the files
 4. In **Mozilla Firefox** only:
-    1. Open the url `about:addons`
+    1. Enter `about:addons` in the URL bar
     2. Click on the gear icon (⛭) and then on **Install Add-on From File...**
     3. Select the .zip file
+
+**Note**: *If you receive a message like "corrupted file" in Firefox, it's because the extension was not signed. In this case, try the following:*
+1. Enter `about:debugging` in the URL bar
+2. Click **Load Temporary Add-on**
+3. Select the folder where you had extracted the files
 
 
 ## How to Use
