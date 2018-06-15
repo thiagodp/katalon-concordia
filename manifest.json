@@ -1,7 +1,9 @@
 {
     "manifest_version": 2,
     "name": "Katalon to Concordia",
+    "description": "Extension for transforming Katalon tests to Concordia Language",
     "version": "1.0.0",
+    "author": "Thiago Delgado Pinto",
     "background": {
         "scripts": [
             "bowser.js",
