@@ -2,7 +2,7 @@
     "manifest_version": 2,
     "name": "Katalon to Concordia",
     "description": "Extension for transforming Katalon tests to Concordia Language",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "author": "Thiago Delgado Pinto",
     "background": {
         "scripts": [

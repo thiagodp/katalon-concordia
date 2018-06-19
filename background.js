@@ -37,11 +37,11 @@ function register() {
             type: 'katalon_recorder_register',
             payload: {
                 capabilities: [
-                    // {
-                    //     id: 'concordia-en',
-                    //     summary: 'Concordia Language in English',
-                    //     type: 'export'
-                    // },
+                    {
+                        id: 'concordia-en',
+                        summary: 'Concordia Language in English',
+                        type: 'export'
+                    },
                     {
                         id: 'concordia-pt',
                         summary: 'Concordia Language in Portuguese',
@@ -91,117 +91,6 @@ Response structure when message.type === 'katalon_recorder_export':
 */
 chrome.runtime.onMessageExternal.addListener( function( message, sender, sendResponse ) {
 
-
-    var commandToConcordiaPt = function commandToConcordiaPt( command, index ) {
-
-        var prefix = ! index ? '  Quando eu ' : '    e eu ';
-        var prefixThen = '  Então eu ';
-        var cmd = command.command;
-        var hasTarget = ( command.target !== undefined && command.target !== null );
-        var hasValue = ( command.target !== undefined && command.target !== null );
-        var wrappedTarget;
-        var wrappedValue = '"' + ( command.value || '' ) + '"';
-        if ( hasTarget ) {
-            var target = command.target;
-            if ( 0 === target.indexOf( 'name=' ) ) {
-                target = '@' + target.substr( 'name='.length );
-            } else if ( 0 === target.indexOf( 'id=' ) ) {
-                target = '#' + target.substr( 'id='.length );
-            } else if ( 0 === target.indexOf( 'link=' ) ) {
-                target = target.substr( 'link='.length );
-            }
-            wrappedTarget = '<' + ( target || '' ) + '>';
-        } else {
-            wrappedTarget = '<' + ( command.target || '' ) + '>';
-        }
-
-        if ( 'click' === cmd || 'submit' === cmd ) {
-            return prefix + 'clico em ' + ( hasTarget ? wrappedTarget : wrappedValue );
-        }
-
-        if ( 'close' === cmd ) {
-            return prefix + 'fecho a janela ' + wrappedTarget;
-        }
-
-        if ( 'doubleClick' === cmd ) {
-            return prefix + 'dou um duplo clique em ' + wrappedTarget;
-        }
-
-        if ( 'selectWindow' === cmd ) {
-            return prefix + 'abro a janela ' + wrappedTarget;
-        }
-
-        if ( 'open' === cmd ) {
-            return prefix + 'estou em "' + ( command.target || command.value ) + '"';
-        }
-
-        if ( 'pause' === cmd ) {
-            var intVal = parseInt( command.value );
-            if ( ! isNaN( intVal ) ) {
-                intVal = 1;
-            } else if ( intVal < 1000 ) {
-                intVal = 1;
-            } else {
-                intVal = intVal / 1000;
-            }
-            return prefix + 'aguardo ' + intVal + ( ( intVal > 1 ) ? ' segundos' : ' segundo' );
-        }
-
-        if ( 'sendKeys' === cmd ) {
-            return prefix + 'pressiono ' + convertAllKeys( command.value );
-        }
-
-        if ( 'type' === cmd ) {
-            return prefix + 'informo ' + wrappedValue + ' em ' + wrappedTarget;
-        }
-
-        if ( 'verifyElementPresent' === cmd ) {
-            if ( hasValue ) {
-                return prefixThen + 'vejo que ' + wrappedTarget + ' possui ' + wrappedValue;
-            }
-            return prefixThen + 'vejo ' + wrappedTarget;
-        }
-
-        if ( 'verifyText' === cmd ) {
-            if ( hasTarget ) {
-                return prefixThen + 'vejo que ' + wrappedTarget + ' possui ' + wrappedValue;
-            }
-            return prefixThen + 'vejo o texto ' + wrappedValue;
-        }
-
-        if ( 'verifyTextPresent' == cmd ) {
-            return prefixThen + 'vejo o texto "' + ( command.target || command.value ) + '"';
-        }
-
-        if ( 'verifyTitle' === cmd || 'assertTitle' === cmd ) {
-            return prefixThen + 'vejo o título com ' + wrappedValue;
-        }
-
-        if ( 'waitForElementPresent' === cmd ) {
-            return prefix + 'espero por ' + wrappedTarget;
-        }
-
-        if ( 'waitForPageToLoad' === cmd ) {
-            return prefix + 'espero pela url ' + wrappedTarget;
-        }
-
-        return '# Não consegui entender o comando: ' + JSON.stringify( command );
-    };
-
-
-    var commandsToConcordia = function commandsToConcordia( commands, language ) {
-        var content = '';
-        var len = commands.length;
-        for ( var i = 0; i < len; ++i ) {
-            var command = commands[ i ];
-            if ( 'pt' === language ) {
-                content += commandToConcordiaPt( command, i ) + '\n';
-            }
-        }
-        return content;
-    };
-
-
     if ( 'katalon_recorder_export' === message.type ) {
 
         var payload = message.payload;
@@ -209,7 +98,7 @@ chrome.runtime.onMessageExternal.addListener( function( message, sender, sendRes
 
         var outputPayload = {
             content: 'Invalid capability ID',
-            extension: 'concordia',
+            extension: 'feature',
             mimetype: 'text/plain'
         };
 
@@ -235,6 +124,215 @@ chrome.runtime.onMessageExternal.addListener( function( message, sender, sendRes
         } );
     }
 } );
+
+function commandsToConcordia( commands, language ) {
+    var content = '';
+    var len = commands.length;
+    for ( var i = 0; i < len; ++i ) {
+        var command = commands[ i ];
+        if ( 'pt' === language ) {
+            content += commandToConcordiaPt( command, i ) + '\n';
+        } else if ( 'en' === language ) {
+            content += commandToConcordiaEn( command, i ) + '\n';
+        }
+    }
+    return content;
+}
+
+function commandToConcordiaPt( command, index ) {
+
+    var prefix = ! index ? '  Quando eu ' : '    e eu ';
+    var prefixThen = '  Então eu ';
+    var cmd = command.command;
+    var hasTarget = ( command.target !== undefined && command.target !== null );
+    var hasValue = ( command.target !== undefined && command.target !== null );
+    var wrappedTarget;
+    var wrappedValue = '"' + ( command.value || '' ) + '"';
+
+    if ( hasTarget ) {
+        var target = command.target;
+        if ( 0 === target.indexOf( 'name=' ) ) {
+            target = '@' + target.substr( 'name='.length );
+        } else if ( 0 === target.indexOf( 'id=' ) ) {
+            target = '#' + target.substr( 'id='.length );
+        } else if ( 0 === target.indexOf( 'link=' ) ) {
+            target = target.substr( 'link='.length );
+        }
+        wrappedTarget = '<' + ( target || '' ) + '>';
+    } else {
+        wrappedTarget = '<' + ( command.target || '' ) + '>';
+    }
+
+    if ( 'click' === cmd || 'submit' === cmd ) {
+        return prefix + 'clico em ' + ( hasTarget ? wrappedTarget : wrappedValue );
+    }
+
+    if ( 'close' === cmd ) {
+        return prefix + 'fecho a janela ' + wrappedTarget;
+    }
+
+    if ( 'doubleClick' === cmd ) {
+        return prefix + 'dou um duplo clique em ' + wrappedTarget;
+    }
+
+    if ( 'selectWindow' === cmd ) {
+        return prefix + 'abro a janela ' + wrappedTarget;
+    }
+
+    if ( 'open' === cmd ) {
+        return prefix + 'estou em "' + ( command.target || command.value ) + '"';
+    }
+
+    if ( 'pause' === cmd ) {
+        var intVal = parseInt( command.value );
+        if ( ! isNaN( intVal ) ) {
+            intVal = 1;
+        } else if ( intVal < 1000 ) {
+            intVal = 1;
+        } else {
+            intVal = intVal / 1000;
+        }
+        return prefix + 'aguardo ' + intVal + ( ( intVal > 1 ) ? ' segundos' : ' segundo' );
+    }
+
+    if ( 'sendKeys' === cmd ) {
+        return prefix + 'pressiono ' + convertAllKeys( command.value );
+    }
+
+    if ( 'type' === cmd ) {
+        return prefix + 'informo ' + wrappedValue + ' em ' + wrappedTarget;
+    }
+
+    if ( 'verifyElementPresent' === cmd ) {
+        if ( hasValue ) {
+            return prefixThen + 'vejo que ' + wrappedTarget + ' possui ' + wrappedValue;
+        }
+        return prefixThen + 'vejo ' + wrappedTarget;
+    }
+
+    if ( 'verifyText' === cmd ) {
+        if ( hasTarget ) {
+            return prefixThen + 'vejo que ' + wrappedTarget + ' possui ' + wrappedValue;
+        }
+        return prefixThen + 'vejo o texto ' + wrappedValue;
+    }
+
+    if ( 'verifyTextPresent' == cmd ) {
+        return prefixThen + 'vejo o texto "' + ( command.target || command.value ) + '"';
+    }
+
+    if ( 'verifyTitle' === cmd || 'assertTitle' === cmd ) {
+        return prefixThen + 'vejo o título com ' + wrappedValue;
+    }
+
+    if ( 'waitForElementPresent' === cmd ) {
+        return prefix + 'espero por ' + wrappedTarget;
+    }
+
+    if ( 'waitForPageToLoad' === cmd ) {
+        return prefix + 'espero pela url ' + wrappedTarget;
+    }
+
+    return '# Não consegui entender o comando: ' + JSON.stringify( command );
+}
+
+
+function commandToConcordiaEn( command, index ) {
+
+    var prefix = ! index ? '  When I ' : '    and I ';
+    var prefixThen = '  Then I ';
+    var cmd = command.command;
+    var hasTarget = ( command.target !== undefined && command.target !== null );
+    var hasValue = ( command.target !== undefined && command.target !== null );
+    var wrappedTarget;
+    var wrappedValue = '"' + ( command.value || '' ) + '"';
+
+    if ( hasTarget ) {
+        var target = command.target;
+        if ( 0 === target.indexOf( 'name=' ) ) {
+            target = '@' + target.substr( 'name='.length );
+        } else if ( 0 === target.indexOf( 'id=' ) ) {
+            target = '#' + target.substr( 'id='.length );
+        } else if ( 0 === target.indexOf( 'link=' ) ) {
+            target = target.substr( 'link='.length );
+        }
+        wrappedTarget = '<' + ( target || '' ) + '>';
+    } else {
+        wrappedTarget = '<' + ( command.target || '' ) + '>';
+    }
+
+    if ( 'click' === cmd || 'submit' === cmd ) {
+        return prefix + 'click on ' + ( hasTarget ? wrappedTarget : wrappedValue );
+    }
+
+    if ( 'close' === cmd ) {
+        return prefix + 'close the window ' + wrappedTarget;
+    }
+
+    if ( 'doubleClick' === cmd ) {
+        return prefix + 'double click ' + wrappedTarget;
+    }
+
+    if ( 'selectWindow' === cmd ) {
+        return prefix + 'open the window ' + wrappedTarget;
+    }
+
+    if ( 'open' === cmd ) {
+        return prefix + 'am on "' + ( command.target || command.value ) + '"';
+    }
+
+    if ( 'pause' === cmd ) {
+        var intVal = parseInt( command.value );
+        if ( ! isNaN( intVal ) ) {
+            intVal = 1;
+        } else if ( intVal < 1000 ) {
+            intVal = 1;
+        } else {
+            intVal = intVal / 1000;
+        }
+        return prefix + 'wait ' + intVal + ( ( intVal > 1 ) ? ' seconds' : ' second' );
+    }
+
+    if ( 'sendKeys' === cmd ) {
+        return prefix + 'press ' + convertAllKeys( command.value );
+    }
+
+    if ( 'type' === cmd ) {
+        return prefix + 'fill ' + wrappedTarget + ' with ' + wrappedValue;
+    }
+
+    if ( 'verifyElementPresent' === cmd ) {
+        if ( hasValue ) {
+            return prefixThen + 'see that ' + wrappedTarget + ' has ' + wrappedValue;
+        }
+        return prefixThen + 'see ' + wrappedTarget;
+    }
+
+    if ( 'verifyText' === cmd ) {
+        if ( hasTarget ) {
+            return prefixThen + 'see that ' + wrappedTarget + ' has the text ' + wrappedValue;
+        }
+        return prefixThen + 'see the text ' + wrappedValue;
+    }
+
+    if ( 'verifyTextPresent' == cmd ) {
+        return prefixThen + 'see the text "' + ( command.target || command.value ) + '"';
+    }
+
+    if ( 'verifyTitle' === cmd || 'assertTitle' === cmd ) {
+        return prefixThen + 'see the title with ' + wrappedValue;
+    }
+
+    if ( 'waitForElementPresent' === cmd ) {
+        return prefix + 'wait for ' + wrappedTarget;
+    }
+
+    if ( 'waitForPageToLoad' === cmd ) {
+        return prefix + 'wait for the url ' + wrappedTarget;
+    }
+
+    return '# Can\'t translate the command: ' + JSON.stringify( command );
+}
 
 
 function convertKey( key ) {
