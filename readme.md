@@ -7,6 +7,9 @@ This extension converts test scripts recorded with [Katalon Recorder](https://ww
 ![Using](media/using.gif)
 
 
+[Latest News](https://github.com/thiagodp/katalon-concordia/releases) 📰
+
+
 ## Install
 
 Before installing, make sure you have [Katalon Recorder](https://www.katalon.com/resources-center/blog/katalon-automation-recorder/) installed.
