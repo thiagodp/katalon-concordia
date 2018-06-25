@@ -60,6 +60,7 @@ In **Google Chrome** only:
 - `doubleClick`
 - `open`
 - `pause`
+- `select`
 - `selectWindow`
 - `sendKeys`
 - `submit`
