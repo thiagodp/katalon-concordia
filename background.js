@@ -147,7 +147,7 @@ function commandToConcordiaPt( command, index ) {
     var hasTarget = ( command.target !== undefined && command.target !== null );
     var hasValue = ( command.target !== undefined && command.target !== null );
     var wrappedTarget;
-    var wrappedValue = '"' + ( command.value || '' ) + '"';
+    var wrappedValue;
 
     if ( hasTarget ) {
         var target = command.target;
@@ -163,6 +163,22 @@ function commandToConcordiaPt( command, index ) {
         wrappedTarget = '<' + ( command.target || '' ) + '>';
     }
 
+    if ( hasValue ) {
+        var value = command.value;
+        if ( 0 === value.indexOf( 'label=' ) ) {
+            value = value.substr( 'label='.length );
+        } else if ( 0 === value.indexOf( 'name=' ) ) {
+            value = value.substr( 'name='.length );
+        } else if ( 0 === value.indexOf( 'id=' ) ) {
+            value = value.substr( 'id='.length );
+        } else if ( 0 === value.indexOf( 'link=' ) ) {
+            value = value.substr( 'link='.length );
+        }
+        wrappedValue = '"' + ( value || '' ) + '"';
+    } else {
+        wrappedValue = '"' + ( command.value || '' ) + '"'
+    }
+
     if ( 'click' === cmd || 'submit' === cmd ) {
         return prefix + 'clico em ' + ( hasTarget ? wrappedTarget : wrappedValue );
     }
@@ -173,6 +189,10 @@ function commandToConcordiaPt( command, index ) {
 
     if ( 'doubleClick' === cmd ) {
         return prefix + 'dou um duplo clique em ' + wrappedTarget;
+    }
+
+    if ( 'select' === cmd ) {
+        return prefix + 'seleciono ' + wrappedValue + ' em ' + wrappedTarget;
     }
 
     if ( 'selectWindow' === cmd ) {
@@ -245,7 +265,7 @@ function commandToConcordiaEn( command, index ) {
     var hasTarget = ( command.target !== undefined && command.target !== null );
     var hasValue = ( command.target !== undefined && command.target !== null );
     var wrappedTarget;
-    var wrappedValue = '"' + ( command.value || '' ) + '"';
+    var wrappedValue;
 
     if ( hasTarget ) {
         var target = command.target;
@@ -261,6 +281,22 @@ function commandToConcordiaEn( command, index ) {
         wrappedTarget = '<' + ( command.target || '' ) + '>';
     }
 
+    if ( hasValue ) {
+        var value = command.value;
+        if ( 0 === value.indexOf( 'label=' ) ) {
+            value = value.substr( 'label='.length );
+        } else if ( 0 === value.indexOf( 'name=' ) ) {
+            value = value.substr( 'name='.length );
+        } else if ( 0 === value.indexOf( 'id=' ) ) {
+            value = value.substr( 'id='.length );
+        } else if ( 0 === value.indexOf( 'link=' ) ) {
+            value = value.substr( 'link='.length );
+        }
+        wrappedValue = '"' + ( value || '' ) + '"';
+    } else {
+        wrappedValue = '"' + ( command.value || '' ) + '"'
+    }
+
     if ( 'click' === cmd || 'submit' === cmd ) {
         return prefix + 'click on ' + ( hasTarget ? wrappedTarget : wrappedValue );
     }
@@ -271,6 +307,10 @@ function commandToConcordiaEn( command, index ) {
 
     if ( 'doubleClick' === cmd ) {
         return prefix + 'double click ' + wrappedTarget;
+    }
+
+    if ( 'select' === cmd ) {
+        return prefix + 'select ' + wrappedTarget + ' with ' + wrappedValue;
     }
 
     if ( 'selectWindow' === cmd ) {
