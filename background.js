@@ -5,6 +5,10 @@
  *
  * @see https://github.com/thiagodp/katalon-concordia
  * @see http://concordialang.org
+ *
+ *
+ * WARNING: this file needs a very big refactoring!
+ *
  */
 
 // TEMPORARY IDs !!!
@@ -157,6 +161,11 @@ function commandToConcordiaPt( command, index ) {
             target = '#' + target.substr( 'id='.length );
         } else if ( 0 === target.indexOf( 'link=' ) ) {
             target = target.substr( 'link='.length );
+        } else if ( 0 === target.indexOf( 'xpath=(.' ) ) {
+            target = target.substr( 'xpath=(.'.length );
+            // Removes the last ')'
+            var idx = target.lastIndexOf( ')' );
+            target = target.substring( 0, idx ) + target.substring( idx + 1 );
         }
         wrappedTarget = '<' + ( target || '' ) + '>';
     } else {
@@ -173,6 +182,11 @@ function commandToConcordiaPt( command, index ) {
             value = value.substr( 'id='.length );
         } else if ( 0 === value.indexOf( 'link=' ) ) {
             value = value.substr( 'link='.length );
+        } else if ( 0 === value.indexOf( 'xpath=(.' ) ) {
+            value = value.substr( 'xpath=(.'.length );
+            // Removes the last ')'
+            var idx = value.lastIndexOf( ')' );
+            value = value.substring( 0, idx ) + value.substring( idx + 1 );
         }
         wrappedValue = '"' + ( value || '' ) + '"';
     } else {
@@ -275,6 +289,11 @@ function commandToConcordiaEn( command, index ) {
             target = '#' + target.substr( 'id='.length );
         } else if ( 0 === target.indexOf( 'link=' ) ) {
             target = target.substr( 'link='.length );
+        } else if ( 0 === target.indexOf( 'xpath=(.' ) ) {
+            target = target.substr( 'xpath=(.'.length );
+            // Removes the last ')'
+            var idx = target.lastIndexOf( ')' );
+            target = target.substring( 0, idx ) + target.substring( idx + 1 );
         }
         wrappedTarget = '<' + ( target || '' ) + '>';
     } else {
@@ -291,6 +310,11 @@ function commandToConcordiaEn( command, index ) {
             value = value.substr( 'id='.length );
         } else if ( 0 === value.indexOf( 'link=' ) ) {
             value = value.substr( 'link='.length );
+        } else if ( 0 === value.indexOf( 'xpath=(.' ) ) {
+            value = value.substr( 'xpath=(.'.length );
+            // Removes the last ')'
+            var idx = value.lastIndexOf( ')' );
+            value = value.substring( 0, idx ) + value.substring( idx + 1 );
         }
         wrappedValue = '"' + ( value || '' ) + '"';
     } else {
